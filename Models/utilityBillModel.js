@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const UtilityBillSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: String, required: true },
   propertyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Property', required: true },
   name: String,
   amount: Number,

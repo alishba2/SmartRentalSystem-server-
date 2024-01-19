@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const DamageClaimSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: String, required: true },
   propertyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Property', required: true },
   description: String,
   amount: Number,

@@ -1,7 +1,7 @@
 // routes/damageClaimRoutes.js
 const express = require('express');
 const router = express.Router();
-const damageClaimController = require('../Controllers/utilityController');
+const damageClaimController = require('../Controllers/damageClaimController');
 
 router.get('/getDamageClaim', damageClaimController.getAllDamageClaims);
 router.post('/addDamageClaim', damageClaimController.createDamageClaim);

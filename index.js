@@ -2,7 +2,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connectDB = require('./db');
-const userRoutes = require('./Routes/userRoutes');
+const propertyRoute = require('./Routes/propertyRoutes');
+const rentalsRoutes = require('./Routes/rentalRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,7 +22,8 @@ catch(error){
 }
 
 // Use routes
-app.use('/', userRoutes);
+app.use('/', propertyRoute);
+app.use('/', rentalsRoutes);
 // Add more routes as needed
 
 // Basic route

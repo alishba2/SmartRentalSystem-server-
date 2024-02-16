@@ -53,7 +53,6 @@ const createProperty = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 const getPropertyById = async (req, res) => {
   const propertyId = req.params.id; // Updated variable name
 

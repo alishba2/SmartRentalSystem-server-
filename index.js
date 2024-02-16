@@ -33,7 +33,7 @@ app.use('/', damageClaimRoutes)
 
 // Basic route
 app.get('/', (req, res) => {
-  res.send('Hello, this is your Express server with Mongoose!');
+  res.send('Hello, this is your Express server with Mongoose from local!');
 });
 
 // Start the server

@@ -1,76 +1,72 @@
-// controllers/userController.js
-const Property = require('../Models/propertyModel'); // Updated import statement
+const Property = require('../Models/propertyModel');
+const multer = require('multer');
 
-const getAllProperty = async (req, res) => {
-  try {
-    const properties = await Property.find(); // Updated variable name
-    res.json(properties); // Updated variable name
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+// Multer storage configuration
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const createProperty = async (req, res) => {
-  const {
-    ownerId,
-    type,
-    name,
-    location,
-    price,
-    numberOfBathrooms,
-    numberOfRooms,
-    description,
-    rentAmount,
-    dueDate,
-    installments,
-    images,
-  } = req.body;
-  const status = "free";
-
-  try {
-    const newProperty = new Property({
-      ownerId,
-      type,
-      name,
-      location,
-      price,
-      numberOfBathrooms,
-      numberOfRooms,
-      description,
-      status,
-      rent: {
-        amount: rentAmount,
-        dueDate,
-        installments: installments || [],
-      },
-      images: images || [],
-    });
-
-    const savedProperty = await newProperty.save();
-    console.log("Property created successfully");
-    res.json(savedProperty);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-const getPropertyById = async (req, res) => {
-  const propertyId = req.params.id; // Updated variable name
-
-  try {
-    const property = await Property.findById(propertyId); // Updated variable name
-
-    if (!property) {
-      return res.status(404).json({ error: 'Property not found' }); // Updated error message
+  upload.array('images', 5)(req, res, async (err) => { // Assuming 'images' is the field name for the array of images
+    if (err) {
+      console.error("Error uploading files:", err);
+      return res.status(500).json({ error: 'Error uploading files' });
     }
+    const {
+      ownerId,
+      markerPosition,
+      property,
+      address,
+      city,
+      state,
+      zipCode,
+      country,
+      areaSize,
+      rentAmount,
+      securityDeposit,
+      installmentAvailable,
+      propertyDescription,
+      amenities,
+    } = req.body;
 
-    res.json(property);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+    const status = "free";
+
+    try {
+      const images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
+
+      const newProperty = new Property({
+        ownerId, // Assuming ownerId is extracted from authentication middleware
+        type: property,
+        name: address,
+        location: {
+          address,
+          city,
+          stateProvince: state,
+          zipCode,
+          country,
+          location: markerPosition,
+        },
+        price: rentAmount,
+        description: propertyDescription,
+        areaSize,
+        amenities,
+        images: images, // Save images array to MongoDB
+        rentAmount,
+        securityDeposit,
+        installments: installmentAvailable,
+        status,
+      });
+      console.log(images, "images-----------")
+
+      const savedProperty = await newProperty.save();
+      console.log("Property created successfully");
+      res.json(savedProperty);
+    } catch (error) {
+      console.error("Error creating property:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
 };
 
 module.exports = {
-  getAllProperty, // Updated function name
-  createProperty,
-  getPropertyById,
+  createProperty
 };

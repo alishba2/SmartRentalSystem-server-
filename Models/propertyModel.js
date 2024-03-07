@@ -6,23 +6,38 @@ const InstallmentSchema = new mongoose.Schema({
   isPaid: { type: Boolean, default: false },
 });
 
+const LocationSchema = new mongoose.Schema({
+  address: String,
+  city: String,
+  stateProvince: String,
+  zipCode: String,
+  country: String,
+  location: {
+    latitude: Number,
+    longitude: Number,
+  },
+});
+
+const ImageSchema = new mongoose.Schema({
+  data: Buffer,
+  contentType: String
+});
+
 const PropertySchema = new mongoose.Schema({
-  ownerId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  ownerId: String,
   type: { type: String, required: true },
   name: String,
-  location: String,
+  location: LocationSchema,
   price: Number,
-  numberOfBathrooms: Number,
-  numberOfRooms: Number,
+  
   description: String,
-  images: [{ type: String }],
-  rent: {
-    amount: Number,
-    dueDate: Date,
-    installments: [InstallmentSchema],
-  },
-  status: String
-
+  areaSize: String,
+  amenities: { type: mongoose.Schema.Types.Mixed }, // Change to Mixed type to accept any data type
+  images: {ImageSchema}, // Array of image objects with data and contentType fields
+  rentAmount: Number,
+  securityDeposit: Number,
+  installments: Boolean,
+  status: String,
 });
 
 const Property = mongoose.model('Property', PropertySchema);

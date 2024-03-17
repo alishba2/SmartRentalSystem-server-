@@ -67,6 +67,30 @@ const createProperty = async (req, res) => {
   });
 };
 
+const getAllProperties = async (req, res) => {
+  try {
+    const properties = await Property.find();
+
+    // Convert images to base64-encoded strings
+    const propertiesWithBase64Images = properties.map((property) => {
+      const imagesWithBase64 = property.images.map((image) => ({
+        contentType: image.contentType,
+        data: image.data.toString('base64'),
+      }));
+
+      return {
+        ...property.toObject(),
+        images: imagesWithBase64,
+      };
+    });
+
+    res.json(propertiesWithBase64Images);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
-  createProperty
+  createProperty,
+  getAllProperties
 };

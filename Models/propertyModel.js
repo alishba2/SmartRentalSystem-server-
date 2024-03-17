@@ -33,7 +33,7 @@ const PropertySchema = new mongoose.Schema({
   description: String,
   areaSize: String,
   amenities: { type: mongoose.Schema.Types.Mixed }, // Change to Mixed type to accept any data type
-  images: {ImageSchema}, // Array of image objects with data and contentType fields
+  images: [ImageSchema],
   rentAmount: Number,
   securityDeposit: Number,
   installments: Boolean,

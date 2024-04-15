@@ -7,5 +7,6 @@ const userController = require('../Controllers/propertyController');
 // router.get('/property', userController.getAllProperty);
 router.post('/addproperty', userController.createProperty);
 router.get('/property', userController.getAllProperties);
+router.get('/getPropertyById/:id', userController.getPropertyById);
 
 module.exports = router;

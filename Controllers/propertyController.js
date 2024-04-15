@@ -90,7 +90,39 @@ const getAllProperties = async (req, res) => {
   }
 };
 
+const getPropertyById = async (req, res) => {
+    try {
+      const { id } = req.params; // As  suming the ID is passed as a route parameter
+      console.log(id);
+
+    // Find the property by its ID
+    const property = await Property.findById(id);
+
+    if (!property) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+
+    // Convert images to base64-encoded strings
+    const imagesWithBase64 = property.images.map((image) => ({
+      contentType: image.contentType,
+      data: image.data.toString('base64'),
+    }));
+
+    const propertyWithBase64Images = {
+      ...property.toObject(),
+      images: imagesWithBase64,
+    };
+    console.log("get id---");
+
+    res.json(propertyWithBase64Images);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   createProperty,
-  getAllProperties
+  getAllProperties,
+  getPropertyById
 };

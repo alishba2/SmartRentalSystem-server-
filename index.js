@@ -7,7 +7,7 @@ const rentalsRoutes = require('./Routes/rentalRoutes');
 const utilityBillRoutes = require('./Routes/utilityBillRoute');
 const damageClaimRoutes = require('./Routes/damageClaimRoute');
 const bookingRequest = require('./Routes/bookingRequestRoute');
-
+const rentalDetail = require('./Routes/retailDetailRoute');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -30,6 +30,7 @@ app.use('/', rentalsRoutes);
 app.use('/', utilityBillRoutes);
 app.use('/', damageClaimRoutes);
 app.use('/', bookingRequest);
+app.use('/', rentalDetail);
 // Add more routes as needed
 
 // Basic route

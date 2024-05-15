@@ -119,10 +119,28 @@ const getPropertyById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const updateRentalStatus = async (req, res) => {
+  try {
+    const { id } = req.params; // Assuming the ID is passed as a route parameter
+    const { status } = req.body; // Assuming the status is passed in the request body
 
+    console.log(status, "statusssssssssssssss");
+    // Find the property by its ID and update its rental status
+    const updatedProperty = await Property.findByIdAndUpdate(id, { status }, { new: true });
+
+    if (!updatedProperty) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+
+    res.json(updatedProperty);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   createProperty,
   getAllProperties,
-  getPropertyById
+  getPropertyById,
+  updateRentalStatus
 };

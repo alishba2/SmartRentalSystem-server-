@@ -3,15 +3,14 @@ const RentalDetails = require('../Models/retailDetailModel');
 const createRentalDetail = async (req, res) => {
     try {
 
-        const { phone, ownerId, tenantId, payment,propertyId ,startDate} = req.body;
+        const { ownerId, tenantId,propertyId ,startDate} = req.body;
     
         // Create a new rental detail instance
         const newRentalDetail = new RentalDetails({
-            phone,
+            
             propertyId,
             ownerId,
             tenantId,
-            payment,
             startDate
         });
 

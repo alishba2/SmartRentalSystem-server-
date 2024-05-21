@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 
 const rentalDetailsSchema = new mongoose.Schema({
-    phone: {
-        type: String,
-        required: true
-    },
+   
     propertyId:{
         type: String,
         required: true
@@ -16,13 +13,6 @@ const rentalDetailsSchema = new mongoose.Schema({
     tenantId: {
         type: String,
         required: true
-    },
-    payment: {
-        type: [
-            {
-                type: mongoose.Schema.Types.Mixed 
-            }
-        ]
     },
     startDate: {
         type: Date,

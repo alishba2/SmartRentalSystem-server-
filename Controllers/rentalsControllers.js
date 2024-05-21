@@ -11,10 +11,12 @@ const getAllRentals = async (req, res) => {
 };
 
 const createRental = async (req, res) => {
-  const { userId, propertyId, rentedTill  } = req.body;
+
+  const { propertyId, ownerId, tenantId, noOfInstallments, installment, startDate } = req.body;
+
 
   try {
-    const newRental = new Rental({ userId, propertyId, rentedTill });
+    const newRental = new Rental({ propertyId, ownerId, tenantId, noOfInstallments, installment, startDate });
     const savedRental = await newRental.save();
     console.log("Rental created successfully");
     res.json(savedRental);
@@ -39,8 +41,26 @@ const getRentalById = async (req, res) => {
   }
 };
 
+const getRentalByPropertyId = async (req, res) => {
+  const propertyId = req.params.propertyId; // Assuming propertyId is passed as a parameter
+
+  console.log(propertyId,"property id..............");
+  try {
+      const rentals = await Rental.find({ propertyId: propertyId });
+
+      if (!rentals || rentals.length === 0) {
+          return res.status(404).json({ error: 'No rentals found for the property id' });
+      }
+
+      res.json(rentals);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllRentals,
   createRental,
   getRentalById,
+  getRentalByPropertyId
 };

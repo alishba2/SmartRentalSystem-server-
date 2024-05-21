@@ -1,11 +1,17 @@
 const mongoose = require('mongoose');
 
+
+
+
 const RentalSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
   propertyId: { type: mongoose.Schema.Types.ObjectId, required: true },
-  rentedOn: { type: Date, default: Date.now },
+  ownerId: { type: String, required: true },
+  tenantId: { type:String, required: true },
+  noOfInstallments: { type: Number, required: true },
+  installment: {type:Array},
+  startDate: { type: Date, required: true },
   rentedTill: { type: Date },
-  status: { type: String, enum: ['active', 'expired'], default: 'active' },
+  status: { type: String, default: 'pending' },
 });
 
 const Rental = mongoose.model('Rental', RentalSchema);

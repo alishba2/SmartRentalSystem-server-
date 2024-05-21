@@ -3,15 +3,16 @@ const BookingRequest = require('../Models/bookingRequestModel');
 
 exports.createBookingRequest = async (req, res) => {
   try {
-    const {userId, name, contactNo, email, numFamilyMembers, startDate ,  ownerId, propertyId} = req.body;
+    const {userId, name, contactNo, email, numFamilyMembers, startDate , installmentType, ownerId, propertyId} = req.body;
 
     const newBookingRequest = new BookingRequest({
-        userId,
+      userId,
       name,
       contactNo,
       email,
       numFamilyMembers,
       startDate,
+      installmentType,
       ownerId, 
       propertyId
     });

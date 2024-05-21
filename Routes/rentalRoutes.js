@@ -6,5 +6,7 @@ const rentalController = require('../Controllers/rentalsControllers');
 router.get('/getAllRentals', rentalController.getAllRentals);
 router.post('/addRental', rentalController.createRental);
 router.get('/getRentalById/:id', rentalController.getRentalById);
+router.get('/getRentalByPropertyId/:propertyId', rentalController.getRentalByPropertyId);
+
 
 module.exports = router;

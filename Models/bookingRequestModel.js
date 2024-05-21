@@ -23,6 +23,9 @@ const bookingRequestSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  installmentType:{
+    type:String,
+  },
   ownerId: {
     type:String,
     required:true

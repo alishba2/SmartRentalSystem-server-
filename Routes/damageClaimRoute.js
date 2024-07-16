@@ -2,9 +2,11 @@
 const express = require('express');
 const router = express.Router();
 const damageClaimController = require('../Controllers/damageClaimController');
+const multer = require('multer');
 
+const upload = multer({ dest: 'uploads/' });
 router.get('/getDamageClaim', damageClaimController.getAllDamageClaims);
-router.post('/addDamageClaim', damageClaimController.createDamageClaim);
+router.post('/addDamageClaim', upload.single('image'), damageClaimController.createDamageClaim);
 router.get('getDamageClaimById/:id', damageClaimController.getDamageClaimById);
 
 module.exports = router;

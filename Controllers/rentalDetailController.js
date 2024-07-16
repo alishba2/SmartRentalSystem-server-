@@ -3,11 +3,11 @@ const RentalDetails = require('../Models/retailDetailModel');
 const createRentalDetail = async (req, res) => {
     try {
 
-        const { ownerId, tenantId,propertyId ,startDate} = req.body;
-    
+        const { ownerId, tenantId, propertyId, startDate } = req.body;
+
         // Create a new rental detail instance
         const newRentalDetail = new RentalDetails({
-            
+
             propertyId,
             ownerId,
             tenantId,
@@ -28,7 +28,7 @@ const createRentalDetail = async (req, res) => {
 const getRentalDetailsByTenantId = async (req, res) => {
     try {
         const { tenantId } = req.params;
-     
+
 
         if (!tenantId) {
             return res.status(400).json({ error: "Missing tenantId parameter" });
@@ -50,7 +50,28 @@ const getRentalDetailsByTenantId = async (req, res) => {
     }
 };
 
+
+const getCurrentRentalByPropertyId = async (req, res) => {
+    const propertyId = req.params.propertyId;
+
+    try {
+        const rental = await RentalDetails.findOne({
+            propertyId,
+            endDate: { $exists: false }
+        });
+
+        if (!rental) {
+            return res.status(404).json({ error: 'No current rental found for the property id' });
+        }
+
+        res.json(rental);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     createRentalDetail,
-    getRentalDetailsByTenantId
+    getRentalDetailsByTenantId,
+    getCurrentRentalByPropertyId
 };

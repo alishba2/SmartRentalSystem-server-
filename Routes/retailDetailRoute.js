@@ -10,6 +10,8 @@ const upload = multer({ storage: storage });
 
 router.post('/rentalDetails', rentalDetailController.createRentalDetail);
 router.get('/rentedProperties/:tenantId', rentalDetailController.getRentalDetailsByTenantId);
+router.get('/rentalDetails/:propertyId', rentalDetailController.getCurrentRentalByPropertyId);
+
 
 
 module.exports = router;

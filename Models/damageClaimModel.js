@@ -5,7 +5,7 @@ const DamageClaimSchema = new mongoose.Schema({
   propertyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Property', required: true },
   description: String,
   amount: Number,
-  settled: { type: Boolean, default: false },
+  image: String, // Add the image field
 });
 
 const DamageClaim = mongoose.model('DamageClaim', DamageClaimSchema);

@@ -1,5 +1,6 @@
 // controllers/rentalController.js
 const Rental = require('../Models/rentalsModel');
+const fs = require('fs');
 
 const getAllRentals = async (req, res) => {
   try {
@@ -12,11 +13,11 @@ const getAllRentals = async (req, res) => {
 
 const createRental = async (req, res) => {
 
-  const { propertyId, ownerId, tenantId, noOfInstallments, installment, startDate } = req.body;
+  const { propertyId, ownerId, tenantId, noOfInstallments, installmentType, startDate } = req.body;
 
 
   try {
-    const newRental = new Rental({ propertyId, ownerId, tenantId, noOfInstallments, installment, startDate });
+    const newRental = new Rental({ propertyId, ownerId, tenantId, noOfInstallments, installmentType, startDate });
     const savedRental = await newRental.save();
     console.log("Rental created successfully");
     res.json(savedRental);
@@ -44,23 +45,63 @@ const getRentalById = async (req, res) => {
 const getRentalByPropertyId = async (req, res) => {
   const propertyId = req.params.propertyId; // Assuming propertyId is passed as a parameter
 
-  console.log(propertyId,"property id..............");
+  console.log(propertyId, "property id..............");
   try {
-      const rentals = await Rental.find({ propertyId: propertyId });
+    const rentals = await Rental.find({ propertyId: propertyId });
 
-      if (!rentals || rentals.length === 0) {
-          return res.status(404).json({ error: 'No rentals found for the property id' });
-      }
+    if (!rentals || rentals.length === 0) {
+      return res.status(404).json({ error: 'No rentals found for the property id' });
+    }
 
-      res.json(rentals);
+    res.json(rentals);
   } catch (error) {
-      res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
+
+
+
+const payInstallment = async (req, res) => {
+  console.log("Paying installment..."); b
+  try {
+    const { tenantId, propertyId, installmentNumber, paymentMethod, accountTitle, accountNumber } = req.body;
+    const receipt = req.file ? req.file.path : null;
+
+    // Log incoming request data
+    console.log("Request Data:", { tenantId, propertyId, installmentNumber, paymentMethod, accountTitle, accountNumber, receipt });
+
+    const rentalDetail = await Rental.findOneAndUpdate(
+      { tenantId, propertyId, "installment.installmentNumber": parseInt(installmentNumber) },
+      {
+        $set: {
+          "installment.$.paymentMethod": paymentMethod,
+          "installment.$.receipt": receipt,
+          "installment.$.accountTitle": accountTitle,
+          "installment.$.accountNumber": accountNumber,
+          "installment.$.status": 'approval requested',
+        },
+      },
+      { new: true }
+    );
+
+    if (!rentalDetail) {
+      return res.status(404).json({ error: "Rental detail not found or installment not found" });
+    }
+
+    console.log("Updated Rental Detail:", rentalDetail);
+
+    res.status(200).json(rentalDetail);
+  } catch (error) {
+    console.error("Error paying installment:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 module.exports = {
   getAllRentals,
   createRental,
   getRentalById,
-  getRentalByPropertyId
+  getRentalByPropertyId,
+  payInstallment
 };

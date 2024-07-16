@@ -6,7 +6,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const createProperty = async (req, res) => {
-  upload.array('images', 5)(req, res, async (err) => { // Assuming 'images' is the field name for the array of images
+  upload.array('images', 10)(req, res, async (err) => { // Assuming 'images' is the field name for the array of images
     if (err) {
       console.error("Error uploading files:", err);
       return res.status(500).json({ error: 'Error uploading files' });
@@ -16,10 +16,9 @@ const createProperty = async (req, res) => {
       markerPosition,
       property,
       address,
+      propertyName,
       city,
-      state,
       zipCode,
-      country,
       areaSize,
       rentAmount,
       securityDeposit,
@@ -28,6 +27,7 @@ const createProperty = async (req, res) => {
       amenities,
     } = req.body;
 
+    console.log(req.body, "req.body");
     const status = "free";
 
     try {
@@ -36,16 +36,16 @@ const createProperty = async (req, res) => {
       const newProperty = new Property({
         ownerId, // Assuming ownerId is extracted from authentication middleware
         type: property,
-        name: address,
+
         location: {
           address,
           city,
-          stateProvince: state,
           zipCode,
-          country,
-          location: markerPosition,
         },
+        markerPosition,
+
         price: rentAmount,
+        propertyName: propertyName,
         description: propertyDescription,
         areaSize,
         amenities,
@@ -91,9 +91,9 @@ const getAllProperties = async (req, res) => {
 };
 
 const getPropertyById = async (req, res) => {
-    try {
-      const { id } = req.params; // As  suming the ID is passed as a route parameter
-      console.log(id);
+  try {
+    const { id } = req.params; // As  suming the ID is passed as a route parameter
+    console.log(id);
 
     // Find the property by its ID
     const property = await Property.findById(id);

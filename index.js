@@ -8,6 +8,7 @@ const utilityBillRoutes = require('./Routes/utilityBillRoute');
 const damageClaimRoutes = require('./Routes/damageClaimRoute');
 const bookingRequest = require('./Routes/bookingRequestRoute');
 const rentalDetail = require('./Routes/retailDetailRoute');
+const newInstallment = require('./Routes/installmentRoute');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -15,13 +16,13 @@ const PORT = process.env.PORT || 3001;
 app.use(cors({ origin: 'http://localhost:3000' })); // Allow requests from localhost:3000
 app.use(bodyParser.json());
 
-// Connect to MongoDB
+// Connect to MongoD            B
 try {
-    console.log("hello");
-    connectDB();
-    console.log("hello");
+  console.log("hello");
+  connectDB();
+  console.log("hello");
 } catch (error) {
-    console.log(error);
+  console.log(error);
 }
 
 // Use routes
@@ -31,7 +32,10 @@ app.use('/', utilityBillRoutes);
 app.use('/', damageClaimRoutes);
 app.use('/', bookingRequest);
 app.use('/', rentalDetail);
-// Add more routes as needed
+app.use('/', newInstallment);
+
+
+app.use('/uploads', express.static('uploads'));
 
 // Basic route
 app.get('/', (req, res) => {

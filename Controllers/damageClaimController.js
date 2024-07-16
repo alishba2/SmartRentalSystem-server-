@@ -1,6 +1,6 @@
-// controllers/damageClaimController.js
 const DamageClaim = require('../Models/damageClaimModel');
 
+// Get all damage claims
 const getAllDamageClaims = async (req, res) => {
   try {
     const damageClaims = await DamageClaim.find();
@@ -10,11 +10,13 @@ const getAllDamageClaims = async (req, res) => {
   }
 };
 
+// Create a new damage claim
 const createDamageClaim = async (req, res) => {
-  const { userId, propertyId, description, amount, settled } = req.body;
+  const { userId, propertyId, description, amount } = req.body;
+  const image = req.file ? req.file.path : null; // Get the file path
 
   try {
-    const newDamageClaim = new DamageClaim({ userId, propertyId, description, amount, settled });
+    const newDamageClaim = new DamageClaim({ userId, propertyId, description, amount, image });
     const savedDamageClaim = await newDamageClaim.save();
     console.log('Damage claim created successfully');
     res.json(savedDamageClaim);
@@ -23,6 +25,7 @@ const createDamageClaim = async (req, res) => {
   }
 };
 
+// Get damage claim by ID
 const getDamageClaimById = async (req, res) => {
   const damageClaimId = req.params.id;
 

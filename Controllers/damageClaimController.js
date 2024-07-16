@@ -12,11 +12,11 @@ const getAllDamageClaims = async (req, res) => {
 
 // Create a new damage claim
 const createDamageClaim = async (req, res) => {
-  const { userId, propertyId, description, amount } = req.body;
+  const { userId, rentalId, name, description, amount } = req.body;
   const image = req.file ? req.file.path : null; // Get the file path
 
   try {
-    const newDamageClaim = new DamageClaim({ userId, propertyId, description, amount, image });
+    const newDamageClaim = new DamageClaim({ userId, rentalId, name, description, amount, image });
     const savedDamageClaim = await newDamageClaim.save();
     console.log('Damage claim created successfully');
     res.json(savedDamageClaim);
@@ -42,8 +42,31 @@ const getDamageClaimById = async (req, res) => {
   }
 };
 
+
+
+const getDamageClaimByRentalId = async (req, res) => {
+  console.log("hjeelejrsajfaieor hferaagrgrh");
+  const rentalId = req.params.rentalId;
+  console.log(rentalId, "rental id===========================");
+
+  try {
+    const damageClaim = await DamageClaim.find({ rentalId });
+    console.log(damageClaim, "DamageClaim");
+
+    if (damageClaim.length === 0) {
+      return res.status(404).json({ error: 'No damage claim found for the given rentalId' });
+    }
+
+    res.json(damageClaim);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllDamageClaims,
   createDamageClaim,
   getDamageClaimById,
+  getDamageClaimByRentalId
 };

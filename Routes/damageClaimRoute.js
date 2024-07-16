@@ -7,6 +7,7 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 router.get('/getDamageClaim', damageClaimController.getAllDamageClaims);
 router.post('/addDamageClaim', upload.single('image'), damageClaimController.createDamageClaim);
-router.get('getDamageClaimById/:id', damageClaimController.getDamageClaimById);
+router.get('/getDamageClaimById/:id', damageClaimController.getDamageClaimById);
+router.get('/getDamageClaimByTenant/:rentalId', damageClaimController?.getDamageClaimByRentalId);
 
 module.exports = router;

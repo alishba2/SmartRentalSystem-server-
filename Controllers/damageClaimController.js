@@ -64,9 +64,46 @@ const getDamageClaimByRentalId = async (req, res) => {
 };
 
 
+
+// Update the status and repair option of a damage claim
+const updateDamageClaim = async (req, res) => {
+  const damageClaimId = req.params.id;
+  const { status, repairOption } = req.body;
+
+  // Validate status
+  if (!['pending', 'approved', 'rejected'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid status value' });
+  }
+
+  // Validate repairOption
+  if (repairOption && !['owner', 'tenant'].includes(repairOption)) {
+    return res.status(400).json({ error: 'Invalid repairOption value' });
+  }
+
+  try {
+    const damageClaim = await DamageClaim.findById(damageClaimId);
+
+    if (!damageClaim) {
+      return res.status(404).json({ error: 'Damage claim not found' });
+    }
+
+    // Update the status and repairOption
+    if (status) damageClaim.status = status;
+    if (repairOption) damageClaim.repairOption = repairOption;
+
+    const updatedDamageClaim = await damageClaim.save();
+
+    res.json(updatedDamageClaim);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllDamageClaims,
   createDamageClaim,
   getDamageClaimById,
-  getDamageClaimByRentalId
+  getDamageClaimByRentalId,
+  updateDamageClaim
 };

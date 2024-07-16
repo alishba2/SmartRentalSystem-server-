@@ -9,5 +9,6 @@ router.get('/getDamageClaim', damageClaimController.getAllDamageClaims);
 router.post('/addDamageClaim', upload.single('image'), damageClaimController.createDamageClaim);
 router.get('/getDamageClaimById/:id', damageClaimController.getDamageClaimById);
 router.get('/getDamageClaimByTenant/:rentalId', damageClaimController?.getDamageClaimByRentalId);
+router.put('/UpdateDamageClaims/:id', damageClaimController.updateDamageClaim);
 
 module.exports = router;

@@ -110,3 +110,62 @@ exports.verifyInstallment = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+// Update Installment Status
+exports.updateInstallmentStatus = async (req, res) => {
+    try {
+        const { rentalId, installmentNo } = req.params;
+        const { status } = req.body;
+
+        // Check if the provided status is valid
+        if (!['paid', 'pending', 'expired'].includes(status)) {
+            return res.status(400).json({ error: 'Invalid status provided' });
+        }
+
+        // Find and update the installment status
+        const installment = await Installment.findOneAndUpdate(
+            { rentalId, 'installments.installmentNo': installmentNo },
+            {
+                $set: { 'installments.$.status': status }
+            },
+            { new: true }
+        );
+
+        if (!installment) {
+            return res.status(404).json({ error: 'Installment not found' });
+        }
+
+        res.status(200).json(installment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+exports.updateStatus = async (req, res) => {
+    console.log(req.body, "expireddddddd");
+    try {
+        const { id, installmentId, status } = req.body;
+
+        // Check if the provided status is valid
+        if (!['paid', 'pending', 'expired'].includes(status)) {
+            return res.status(400).json({ error: 'Invalid status provided' });
+        }
+
+        // Find the document by ID and update the specific installment's status
+        const updatedDoc = await Installment.findOneAndUpdate(
+            { _id: id, 'installments._id': installmentId },
+            { $set: { 'installments.$.status': status } },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedDoc) {
+            return res.status(404).json({ error: 'Installment not found' });
+        }
+
+        res.status(200).json(updatedDoc);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

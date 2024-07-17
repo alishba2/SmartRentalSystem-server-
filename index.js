@@ -13,7 +13,13 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000' })); // Allow requests from localhost:3000
+// Configure CORS to allow all origins
+app.use(cors({
+  origin: '*',
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type,Authorization',
+  credentials: true,
+}));
 app.use(bodyParser.json());
 
 // Connect to MongoD            B

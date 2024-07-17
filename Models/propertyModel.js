@@ -43,6 +43,7 @@ const PropertySchema = new mongoose.Schema({
   securityDeposit: Number,
   installments: Boolean,
   status: String,
+  createdOn: { type: Date, default: Date.now },
 });
 
 const Property = mongoose.model('Property', PropertySchema);

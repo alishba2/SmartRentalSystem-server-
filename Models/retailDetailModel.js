@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const rentalDetailsSchema = new mongoose.Schema({
-   
-    propertyId:{
+
+    propertyId: {
         type: String,
         required: true
     },
@@ -17,7 +17,10 @@ const rentalDetailsSchema = new mongoose.Schema({
     startDate: {
         type: Date,
     },
-    
+    endDate: {
+        type: Date, default: null
+    }
+
 });
 
 const RentalDetails = mongoose.model('RentalDetails', rentalDetailsSchema);

@@ -8,6 +8,9 @@ const userController = require('../Controllers/propertyController');
 router.post('/addproperty', userController.createProperty);
 router.get('/property', userController.getAllProperties);
 router.get('/getPropertyById/:id', userController.getPropertyById);
-router.post('/updatePropertyStatus/:id', userController.updateRentalStatus)
+router.post('/updatePropertyStatus/:id', userController.updateRentalStatus);
+router.put('/property/:id', userController.editProperty);
+router.delete('/property/:id', userController.deleteProperty);
+
 
 module.exports = router;

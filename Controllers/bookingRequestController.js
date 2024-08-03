@@ -2,8 +2,11 @@
 const BookingRequest = require('../Models/bookingRequestModel');
 
 exports.createBookingRequest = async (req, res) => {
+  console.log("in booking request...............");
+  console.log(req.body);
+
   try {
-    const {userId, name, contactNo, email, numFamilyMembers, startDate , installmentType, ownerId, propertyId} = req.body;
+    const { userId, name, contactNo, email, numFamilyMembers, startDate, installmentType, ownerId, propertyId } = req.body;
 
     const newBookingRequest = new BookingRequest({
       userId,
@@ -13,7 +16,7 @@ exports.createBookingRequest = async (req, res) => {
       numFamilyMembers,
       startDate,
       installmentType,
-      ownerId, 
+      ownerId,
       propertyId
     });
 
@@ -26,27 +29,27 @@ exports.createBookingRequest = async (req, res) => {
   }
 };
 exports.getBookingRequestsByUserId = async (req, res) => {
-    try {
-      const { userId } = req.params;
-      const bookingRequests = await BookingRequest.find({ userId });
-      res.status(200).json({ data: bookingRequests });
-    } catch (error) {
-      console.error('Error fetching booking requests by userId:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  };
+  try {
+    const { userId } = req.params;
+    console.log
+    const bookingRequests = await BookingRequest.find({ userId });
+    res.status(200).json({ data: bookingRequests });
+  } catch (error) {
+    console.error('Error fetching booking requests by userId:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
-  exports.getBookingRequestsByPropertyId = async (req, res) => {
-    try {
-      console.log("get property by id");
-      const { propertyId } = req.params;
-      
-      const bookingRequests = await BookingRequest.find({ propertyId });
-      console.log(bookingRequests);
-      res.status(200).json({ data: bookingRequests });
-    } catch (error) {
-      console.error('Error fetching booking requests by propertyId:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  };
-  
+exports.getBookingRequestsByPropertyId = async (req, res) => {
+  try {
+    console.log("get property by id");
+    const { propertyId } = req.params;
+
+    const bookingRequests = await BookingRequest.find({ propertyId });
+    console.log(bookingRequests);
+    res.status(200).json({ data: bookingRequests });
+  } catch (error) {
+    console.error('Error fetching booking requests by propertyId:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

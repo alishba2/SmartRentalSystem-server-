@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const bookingRequestSchema = new mongoose.Schema({
-  userId: String, 
+  userId: String,
   name: {
     type: String,
     required: true
@@ -23,16 +23,16 @@ const bookingRequestSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  installmentType:{
-    type:String,
+  installmentType: {
+    type: String,
   },
   ownerId: {
-    type:String,
-    required:true
+    type: String,
+    required: true
   },
-  propertyId:{
-    type:String,
-    required:true
+  propertyId: {
+    type: String,
+    required: true
   }
 });
 

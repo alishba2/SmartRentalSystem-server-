@@ -6,7 +6,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const createProperty = async (req, res) => {
-  upload.array('images', 10)(req, res, async (err) => { // Assuming 'images' is the field name for the array of images
+  upload.array('images', 10)(req, res, async (err) => {
     if (err) {
       console.error("Error uploading files:", err);
       return res.status(500).json({ error: 'Error uploading files' });
@@ -34,22 +34,20 @@ const createProperty = async (req, res) => {
       const images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
 
       const newProperty = new Property({
-        ownerId, // Assuming ownerId is extracted from authentication middleware
+        ownerId,
         type: property,
-
         location: {
           address,
           city,
           zipCode,
         },
         markerPosition,
-
         price: rentAmount,
-        propertyName: propertyName,
+        propertyName,
         description: propertyDescription,
         areaSize,
         amenities,
-        images: images, // Save images array to MongoDB
+        images: images,
         rentAmount,
         securityDeposit,
         installments: installmentAvailable,
@@ -68,10 +66,10 @@ const createProperty = async (req, res) => {
 };
 
 const getAllProperties = async (req, res) => {
+  console.log("get all properties");
   try {
     const properties = await Property.find();
 
-    // Convert images to base64-encoded strings
     const propertiesWithBase64Images = properties.map((property) => {
       const imagesWithBase64 = property.images.map((image) => ({
         contentType: image.contentType,
@@ -92,17 +90,14 @@ const getAllProperties = async (req, res) => {
 
 const getPropertyById = async (req, res) => {
   try {
-    const { id } = req.params; // As  suming the ID is passed as a route parameter
-    console.log(id);
+    const { id } = req.params;
 
-    // Find the property by its ID
     const property = await Property.findById(id);
 
     if (!property) {
       return res.status(404).json({ error: "Property not found" });
     }
 
-    // Convert images to base64-encoded strings
     const imagesWithBase64 = property.images.map((image) => ({
       contentType: image.contentType,
       data: image.data.toString('base64'),
@@ -119,13 +114,14 @@ const getPropertyById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 const updateRentalStatus = async (req, res) => {
   try {
-    const { id } = req.params; // Assuming the ID is passed as a route parameter
-    const { status } = req.body; // Assuming the status is passed in the request body
+    const { id } = req.params;
+    const { status } = req.body;
 
     console.log(status, "statusssssssssssssss");
-    // Find the property by its ID and update its rental status
+
     const updatedProperty = await Property.findByIdAndUpdate(id, { status }, { new: true });
 
     if (!updatedProperty) {
@@ -138,9 +134,93 @@ const updateRentalStatus = async (req, res) => {
   }
 };
 
+const editProperty = async (req, res) => {
+  upload.array('images', 10)(req, res, async (err) => {
+    if (err) {
+      console.error("Error uploading files:", err);
+      return res.status(500).json({ error: 'Error uploading files' });
+    }
+
+    const { id } = req.params;
+    const {
+      ownerId,
+      markerPosition,
+      property,
+      address,
+      propertyName,
+      city,
+      zipCode,
+      areaSize,
+      rentAmount,
+      securityDeposit,
+      installmentAvailable,
+      propertyDescription,
+      amenities,
+    } = req.body;
+
+    console.log(req.body, "req.body");
+
+    try {
+      const images = req.files.map(file => ({ data: file.buffer, contentType: file.mimetype }));
+
+      const updatedProperty = await Property.findByIdAndUpdate(
+        id,
+        {
+          ownerId,
+          type: property,
+          location: {
+            address,
+            city,
+            zipCode,
+          },
+          markerPosition,
+          price: rentAmount,
+          propertyName,
+          description: propertyDescription,
+          areaSize,
+          amenities,
+          images: images,
+          rentAmount,
+          securityDeposit,
+          installments: installmentAvailable,
+          status: "free",
+        },
+        { new: true }
+      );
+
+      if (!updatedProperty) {
+        return res.status(404).json({ error: "Property not found" });
+      }
+
+      res.json(updatedProperty);
+    } catch (error) {
+      console.error("Error updating property:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+};
+
+const deleteProperty = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedProperty = await Property.findByIdAndDelete(id);
+
+    if (!deletedProperty) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+
+    res.json({ message: "Property deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createProperty,
   getAllProperties,
   getPropertyById,
-  updateRentalStatus
+  updateRentalStatus,
+  editProperty,
+  deleteProperty,
 };

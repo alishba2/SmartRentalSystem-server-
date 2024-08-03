@@ -1,4 +1,4 @@
-const UtilityBill = require('../models/utilityBillModel');
+const UtilityBill = require('../Models/utilityBillModel');
 
 const getAllUtilityBills = async (req, res) => {
     try {

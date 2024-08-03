@@ -1,3 +1,11 @@
+
+
+# Dependency directories
+node_modules/
+
+
+# Uploads directory
 /uploads
 
-/package-lock.json
+# Ignore package-lock.json (if needed, though it's often better to commit this)
+package-lock.json

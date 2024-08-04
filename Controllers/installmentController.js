@@ -5,21 +5,28 @@ const upload = multer({ dest: 'uploads/' }); // configure storage as needed
 // Create Installment
 exports.createInstallment = async (req, res) => {
     try {
-        const { rentalId, installments, month } = req.body;
+        const { rentalId, installments, month, installmentType } = req.body;
+
+        // Check if the installment type is "10 minute" and enforce the five installment limit
+        if (installmentType === '10 minute' && installments.length > 5) {
+            console.log("Exceeds maximum allowed installments for '10 minute' type");
+            return res.status(400).json({ error: "Exceeds maximum allowed installments for '10 minute' type. Maximum 5 allowed." });
+        }
 
         // Check if an installment for the given rentalId and month already exists
         const existingInstallment = await Installment.findOne({ rentalId, month });
         if (existingInstallment) {
-            console.log("already exist");
+            console.log("Installment for this month already exists");
             return res.status(400).json({ error: 'Installment for this month already exists' });
         }
 
-        console.log("creating installments");
+        console.log("Creating installments");
         console.log(rentalId, installments, month);
         const newInstallment = new Installment({
             rentalId,
             installments,
-            month
+            month,
+            installmentType  // Make sure to store the installment type if not already done
         });
 
         const savedInstallment = await newInstallment.save();
@@ -28,6 +35,7 @@ exports.createInstallment = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Get Installments by Rental ID
 exports.getInstallmentsByRentalId = async (req, res) => {

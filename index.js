@@ -9,8 +9,10 @@ const damageClaimRoutes = require('./Routes/damageClaimRoute');
 const bookingRequest = require('./Routes/bookingRequestRoute');
 const rentalDetail = require('./Routes/retailDetailRoute');
 const newInstallment = require('./Routes/installmentRoute');
+const notification = require('./Routes/notificationRoute');
 const notice = require('./Routes/noticeRequest');
 const queries = require('./Routes/functionRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -46,6 +48,7 @@ app.use('/', rentalDetail);
 app.use('/', newInstallment);
 app.use('/', notice);
 app.use('/', queries);
+app.use('/', notification);
 
 
 app.use('/uploads', express.static('uploads'));

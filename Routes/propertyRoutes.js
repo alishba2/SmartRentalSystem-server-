@@ -8,6 +8,7 @@ const userController = require('../Controllers/propertyController');
 router.post('/addproperty', userController.createProperty);
 router.get('/property', userController.getAllProperties);
 router.get('/getPropertyById/:id', userController.getPropertyById);
+router.get('/getProperty/:ownerId', userController.getPropertiesByOwnerId);
 router.post('/updatePropertyStatus/:id', userController.updateRentalStatus);
 router.put('/property/:id', userController.editProperty);
 router.delete('/property/:id', userController.deleteProperty);

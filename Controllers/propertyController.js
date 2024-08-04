@@ -216,6 +216,37 @@ const deleteProperty = async (req, res) => {
   }
 };
 
+const getPropertiesByOwnerId = async (req, res) => {
+  try {
+    const { ownerId } = req.params;
+    console.log(ownerId, "owner idddddddddddddddddddddddd");
+
+    // Find properties by ownerId
+    const properties = await Property.find({ ownerId });
+
+    if (!properties.length) {
+      return res.status(404).json({ error: "No properties found for this owner" });
+    }
+
+    const propertiesWithBase64Images = properties.map((property) => {
+      const imagesWithBase64 = property.images.map((image) => ({
+        contentType: image.contentType,
+        data: image.data.toString('base64'),
+      }));
+
+      return {
+        ...property.toObject(),
+        images: imagesWithBase64,
+      };
+    });
+
+    res.json(propertiesWithBase64Images);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   createProperty,
   getAllProperties,
@@ -223,4 +254,5 @@ module.exports = {
   updateRentalStatus,
   editProperty,
   deleteProperty,
+  getPropertiesByOwnerId
 };

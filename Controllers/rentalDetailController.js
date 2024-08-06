@@ -48,6 +48,7 @@ const getRentalDetailsByTenantId = async (req, res) => {
 
 const getCurrentRentalByPropertyId = async (req, res) => {
     const propertyId = req.params.propertyId;
+    console.log(propertyId, "propertyId=======================");
 
     try {
         const rental = await RentalDetails.findOne({

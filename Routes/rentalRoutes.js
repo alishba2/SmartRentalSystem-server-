@@ -11,6 +11,7 @@ router.post('/addRental', rentalController.createRental);
 router.get('/getRentalById/:id', rentalController.getRentalById);
 router.get('/getRentalByPropertyId/:propertyId', rentalController.getRentalByPropertyId);
 router.post('/payInstallment', upload.single('receipt'), rentalController.payInstallment);
+router.put('/rentals/:id', rentalController.updateRentalStatus);
 
 
 

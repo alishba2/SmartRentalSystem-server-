@@ -98,10 +98,33 @@ const payInstallment = async (req, res) => {
 };
 
 
+const updateRentalStatus = async (req, res) => {
+  console.log("id-------------------");
+  const { id } = req.params; // Assuming rentalId is passed as a URL parameter
+  const { status } = req.body; // The new status is passed in the request body
+
+  try {
+    const updatedRental = await Rental.findByIdAndUpdate(
+      id,
+      { status: status }, // Update the status field
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedRental) {
+      return res.status(404).json({ error: 'Rental not found' });
+    }
+
+    res.json(updatedRental);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllRentals,
   createRental,
   getRentalById,
   getRentalByPropertyId,
-  payInstallment
+  payInstallment,
+  updateRentalStatus
 };

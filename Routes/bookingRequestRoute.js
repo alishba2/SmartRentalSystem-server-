@@ -7,5 +7,6 @@ const bookingRequestController = require('../Controllers/bookingRequestControlle
 router.post('/booking-request', bookingRequestController.createBookingRequest);
 router.get('/getBooking/:userId', bookingRequestController.getBookingRequestsByUserId);
 router.get('/getBookingRequestsByPropertyId/:propertyId', bookingRequestController.getBookingRequestsByPropertyId)
+router.get('/getBookingRequestCount', bookingRequestController.getBookingRequestCount);
 
 module.exports = router;

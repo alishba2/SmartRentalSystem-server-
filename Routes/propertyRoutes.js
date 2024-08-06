@@ -12,6 +12,7 @@ router.get('/getProperty/:ownerId', userController.getPropertiesByOwnerId);
 router.post('/updatePropertyStatus/:id', userController.updateRentalStatus);
 router.put('/property/:id', userController.editProperty);
 router.delete('/property/:id', userController.deleteProperty);
+router.get('/propertyCounts', userController.getPropertyCounts);
 
 
 module.exports = router;

@@ -246,6 +246,24 @@ const getPropertiesByOwnerId = async (req, res) => {
   }
 };
 
+const getPropertyCounts = async (req, res) => {
+  try {
+    const [allCount, freeCount, rentedCount] = await Promise.all([
+      Property.countDocuments({}),
+      Property.countDocuments({ status: 'free' }),
+      Property.countDocuments({ status: 'reserved' })
+    ]);
+
+    res.json({
+      allProperties: allCount,
+      freeProperties: freeCount,
+      rentedProperties: rentedCount
+    });
+  } catch (error) {
+    console.error("Error fetching property counts:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   createProperty,
@@ -254,5 +272,6 @@ module.exports = {
   updateRentalStatus,
   editProperty,
   deleteProperty,
-  getPropertiesByOwnerId
+  getPropertiesByOwnerId,
+  getPropertyCounts
 };

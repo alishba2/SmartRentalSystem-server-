@@ -17,4 +17,7 @@ router.put('/notices/:id', noticeController.updateNoticeById);
 // Delete a notice by ID
 router.delete('/notices/:id', noticeController.deleteNoticeById);
 
+router.get('/notices/:tenantId/:propertyId', noticeController.getNoticesByTenantAndProperty);
+
+
 module.exports = router;

@@ -75,3 +75,20 @@ exports.deleteNoticeById = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+exports.getNoticesByTenantAndProperty = async (req, res) => {
+    try {
+        const { tenantId, propertyId } = req.params;
+
+        // Find notices that match both tenantId and propertyId
+        const notices = await Notice.find({ tenantId, propertyId });
+
+        if (notices.length === 0) {
+            return res.status(404).json({ message: 'No notices found for the given tenant and property' });
+        }
+        res.status(200).json(notices);
+    } catch (error) {
+        console.error('Error fetching notices:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};

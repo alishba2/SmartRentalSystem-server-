@@ -4,8 +4,8 @@ const connectDB = async () => {
   try {
     console.log("In db file");
 
-    // await mongoose.connect('mongodb+srv://alishba2:%2321alishba%2A@cluster0.9gntabz.mongodb.net/leaseConnect?retryWrites=true&w=majority', {
-    await mongoose.connect('mongodb://127.0.0.1/leaseConnect', {
+    await mongoose.connect('mongodb+srv://alishba2:%2321alishba%2A@cluster0.9gntabz.mongodb.net/leaseConnect?retryWrites=true&w=majority', {
+      // await mongoose.connect('mongodb://127/.0.0.1/leaseConnect', {
 
       useNewUrlParser: true,
       useUnifiedTopology: true,

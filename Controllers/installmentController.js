@@ -48,7 +48,7 @@ exports.getInstallmentsByRentalId = async (req, res) => {
 
 
 exports.payInstallment = async (req, res) => {
-    // console.log("paying installment");
+    console.log("paying installment0000000000");
     try {
         const { rentalId, installmentNo } = req.params;
         const { paymentMethod } = req.body;

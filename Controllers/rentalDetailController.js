@@ -31,7 +31,13 @@ const getRentalDetailsByTenantId = async (req, res) => {
         }
 
         // Query the database to find rental details by tenantId
-        const rentedProperties = await RentalDetails.find({ tenantId });
+        const rentedProperties = await RentalDetails.find({
+            tenantId,
+            $or: [
+                { endDate: { $exists: false } }, // Check if endDate does not exist
+                { endDate: null } // Check if endDate is null
+            ]
+        });
 
         // Check if any rental details are found
         if (rentedProperties.length === 0) {
@@ -45,6 +51,7 @@ const getRentalDetailsByTenantId = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 const getCurrentRentalByPropertyId = async (req, res) => {
     const propertyId = req.params.propertyId;

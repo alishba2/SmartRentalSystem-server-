@@ -12,7 +12,9 @@ const newInstallment = require('./Routes/installmentRoute');
 const notification = require('./Routes/notificationRoute');
 const notice = require('./Routes/noticeRequest');
 const queries = require('./Routes/functionRoutes');
-
+const contact = require('./Routes/contactUsRoute');
+const review = require('./Routes/reviewRoute');
+const newsLetter = require('./Routes/newsLetterRoute');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -49,9 +51,10 @@ app.use('/', newInstallment);
 app.use('/', notice);
 app.use('/', queries);
 app.use('/', notification);
-
-
+app.use('/', contact);
+app.use('/', review);
 app.use('/uploads', express.static('uploads'));
+app.use('/', newsLetter);
 
 // Basic route
 app.get('/', (req, res) => {

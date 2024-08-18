@@ -19,4 +19,7 @@ router.put('/verifyInstallment/:rentalId/:installmentNo', installmentController.
 // Update Installment Status by ID
 router.put('/updateStatus', installmentController.updateStatus);
 
+router.put('/updateDueDateNotification/:rentalId/:installmentNo', installmentController.updateDueDateNotificationStatus);
+
+
 module.exports = router;

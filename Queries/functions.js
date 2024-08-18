@@ -7,10 +7,12 @@ const Property = require('../Models/propertyModel');
 const cancelRent = async (propertyId, endDate, status) => {
     try {
         const updatedRentalDetail = await RentalDetails.findOneAndUpdate(
-            { propertyId, endDate: { $exists: false } },
+            { propertyId },
             { endDate },
             { new: true }
         );
+
+
 
         if (!updatedRentalDetail) {
             return { error: 'No current rental found for the property id to add end date' };

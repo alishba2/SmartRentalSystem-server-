@@ -169,3 +169,30 @@ exports.updateStatus = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.updateDueDateNotificationStatus = async (req, res) => {
+    try {
+        const { rentalId, installmentNo } = req.params;
+
+        // Find and update the installment
+        const result = await Installment.updateOne(
+            {
+                rentalId: rentalId,
+                'installments.installmentNo': parseInt(installmentNo)
+            },
+            {
+                $set: { 'installments.$.dueDateNotiifcationSent': true }
+            }
+        );
+
+        // Check if the update was successful
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ error: 'No installment found or notification status was already updated.' });
+        }
+
+        res.json({ message: 'Notification status updated successfully' });
+    } catch (error) {
+        console.error('Error updating notification status:', error);
+        res.status(500).json({ error: 'Error updating notification status' });
+    }
+};

@@ -12,7 +12,8 @@ const InstallmentSchema = new mongoose.Schema({
             paymentMethod: { type: [String], default: [] }, // Change to array
 
             receipt: { type: String }, // Store the path to the receipt file
-            verificationStatus: { type: String, default: 'unverified' } // Track verification status
+            verificationStatus: { type: String, default: 'unverified' }, // Track verification status,
+            dueDateNotiifcationSent: { type: Boolean, default: false }
         }
     ],
     month: { type: String }
